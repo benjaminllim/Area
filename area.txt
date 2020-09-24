@@ -1,0 +1,78 @@
+#!/bin/bash
+#This is to start bash
+loopy=1
+loop=1
+loopp=1
+#Outer while loop to repeat the width and height
+while [ $loopp -eq 1 ]
+do
+	#Inner loop for width
+	while [ $loopy -eq 1 ]
+	#Must have a space because square bracket is a command
+	do
+	#Clears the terminal screen
+	
+	read -p "Enter width: " width
+	#bc allows several types of calculators
+	#echo $width | bc
+
+		#if [[ $width =~ ^[0-9]+$ ]]  Allows only integers
+		#if [[ $width =~ ^[0-9]+*/.?[0-9]*$ ]]
+		if [[ $width =~ ^[0-9]+\.?[0-9]*$ ]]
+		#Allows floating point and integers
+		then
+		echo -e "\e[1;32mpass width \e[0m"
+		loopy=0
+		else
+		loopy=1
+		clear
+		echo -e "\e[0;31mfail width re-enter  \e[0m"
+		fi
+	done
+	
+
+	#Inner loop for width
+	while [ $loop -eq 1 ]
+	do
+	read -p "Enter height: " height
+	#echo $height | bc
+
+		if [[ $height =~ ^[0-9]+\.?[0-9]*$ ]]
+		then
+		echo -e "\e[1;32mpass height \e[0m"
+		loop=0
+		else
+		loop=1
+		clear
+		echo -e "\e[0;31mfail height re-enter  \e[0m"
+		fi
+	done
+     	loopp=0
+	#Calcules the area in cm and inches
+	area=$(echo "$width*$height" | bc)
+        areainch=$(echo "$width*$height/2.5" | bc)
+        printf "\e[1;32mThe area is: \e[0m%f\n" $area 
+        printf "\e[1;32mThe area in inches is: \e[0m%f\n" $areainch 
+        read -p "Do you want another go? y for Yes or n for no 
+" input
+                #Only allows a single character and 			              	either y or Y only
+		if [[ $input =~ ^[y|Y]$ ]] 
+                then
+		clear    
+		#Sets all loops to 1 to continue the loop            
+		loopp=1
+                loop=1
+                loopy=1
+                elif [[ $input =~ ^[n|N]$ ]] 
+                then
+		#Only need to set the outer loop to 0 to break the loop
+                loopp=0
+		clear	
+		#Exits terminal when user chooses no
+		echo -e "\e[0;31mExiting...  \e[0m"	
+		exit 
+		else
+		echo -e "\e[0;31mInvalid input. Please try again.  \e[0m"
+                fi
+    
+done
